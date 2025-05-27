@@ -1,7 +1,7 @@
 import { instance, instanceWithToken } from "./axios";
 
 export const signIn = async (data) => {
-  const response = await instance.post("/account/signin/", data);
+  const response = await instanceWithToken.post("/account/signin/", data);
   if (response.status === 200) {
     window.location.href = "/";
   } else {
@@ -10,13 +10,22 @@ export const signIn = async (data) => {
 };
 
 export const signUp = async (data) => {
-  const response = await instance.post("/account/signup/", data);
+  const response = await instanceWithToken.post("/account/signup/", data);
   if (response.status === 200 || response.status === 201) {
     window.location.href = "/";
   } else {
     console.log("Error");
   }
   return response;
+};
+
+export const signOut = async () => {
+  const response = await instanceWithToken.post("/account/signout/");
+  if (response.status === 204) {
+    window.location.href = "/";
+  } else {
+    console.log("Error");
+  }
 };
 
 export const getPosts = async () => {

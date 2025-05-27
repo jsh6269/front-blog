@@ -1,21 +1,27 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getCookie, removeCookie } from "../../utils/cookie";
-
+import { signOut } from "../../apis/api";
 import lion from "../../assets/images/lion.jpeg";
+import { instanceWithToken } from "../../apis/axios";
 
 const Header = () => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false); // 로그인 여부 상태, 우선 false로 초기화
 
   useEffect(() => {
-    const loggedIn = getCookie("access_token") ? true : false;
-    setIsUserLoggedIn(loggedIn);
+    const checkLogin = async () => {
+      try {
+        const response = await instanceWithToken.get("/account/info/");
+        setIsUserLoggedIn(response.status === 200);
+      } catch (error) {
+        setIsUserLoggedIn(false);
+      }
+    };
+    checkLogin();
   }, []);
 
   // 로그아웃 시 cookie에서 access_token, refresh_token 제거
   const handleSignOut = () => {
-    removeCookie("access_token");
-    removeCookie("refresh_token");
+    signOut();
     window.location.href = "/"; // 새로고침 - 로그아웃 되었다는 것을 인지시켜주기 위해
   };
 
