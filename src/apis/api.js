@@ -132,11 +132,15 @@ export const deleteComment = async (id) => {
   }
 };
 export const getUser = async () => {
-  const response = await instanceWithToken.get("/account/info/");
-  if (response.status === 200) {
-    console.log("GET USER SUCCESS");
-  } else {
-    console.log("[ERROR] error while updating comment");
+  try {
+    const response = await instanceWithToken.get("/account/info/");
+    if (response.status === 200) {
+      console.log("GET USER SUCCESS");
+    } else {
+      console.log("[ERROR] error while updating comment");
+    }
+    return response.data;
+  } catch {
+    return null;
   }
-  return response.data;
 };

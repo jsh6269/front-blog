@@ -25,12 +25,14 @@ const CommentElement = (props) => {
 
   // get user info
   useEffect(() => {
-    if (getCookie("access_token")) {
-      const getUserAPI = async () => {
-        const user = await getUser();
-        setUser(user);
-      };
+    const getUserAPI = async () => {
+      const user = await getUser();
+      setUser(user);
+    };
+    try {
       getUserAPI();
+    } catch {
+      console.log("unauthorized");
     }
   }, []);
 
