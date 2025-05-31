@@ -144,3 +144,12 @@ export const getUser = async () => {
     return null;
   }
 };
+
+export const checkLogin = async () => {
+  try {
+    const response = await instanceWithToken.get("/account/info/");
+    return response.status === 200;
+  } catch (error) {
+    return false;
+  }
+};
